@@ -13,3 +13,5 @@
     - name: Print OS info
       ansible.builtin.package:
         name: apache
+        state: present
+        
