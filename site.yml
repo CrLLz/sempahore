@@ -1,6 +1,5 @@
 ---
-- hosts: my_servers
-  become: true
+- hosts: all
   tasks:
     - name: Print OS info
       ansible.builtin.package:
