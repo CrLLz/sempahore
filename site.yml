@@ -6,6 +6,10 @@
         upgrade: full
       become: true
       tags: apt
+    - name: Install ntpdate
+      ansible.builtin.package:
+        name: ntpdate
+        state: presen
     - name: Print OS info
       ansible.builtin.package:
-        name: apache2
+        name: apache
