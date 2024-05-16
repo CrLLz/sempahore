@@ -1,12 +1,6 @@
 ---
 - hosts: all
   tasks:
-    - name: Remove apt lock file
-      file:
-        state: absent
-        path: "/var/lib/dpkg/lock-frontend"
-      become: true
-      tags: apt
     - name: Update all packages to the latest version
       apt:
         upgrade: full
