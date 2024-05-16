@@ -10,8 +10,9 @@
       ansible.builtin.package:
         name: ntpdate
         state: present
+      become: true
     - name: Print OS info
       ansible.builtin.package:
         name: apache2
         state: present
-        
+      become: true
