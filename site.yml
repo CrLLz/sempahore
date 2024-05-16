@@ -9,7 +9,7 @@
     - name: Install ntpdate
       ansible.builtin.package:
         name: ntpdate
-        state: presen
+        state: present
     - name: Print OS info
       ansible.builtin.package:
         name: apache
