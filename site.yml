@@ -7,6 +7,11 @@
         path: "/var/lib/dpkg/lock-frontend"
       become: true
       tags: apt
+    - name: Update all packages to the latest version
+      apt:
+        upgrade: full
+      become: true
+      tags: apt
     - name: Print OS info
       ansible.builtin.package:
         name: apache2
