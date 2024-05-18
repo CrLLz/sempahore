@@ -7,7 +7,12 @@
       apt:
         upgrade: yes
         update_cache: yes
-    - name: Update all packages to their latest version
-      ansible.builtin.apt:
-        name: "*"
-      state: latest
+    # Install Network Tools
+    - name: Install Network Tools
+      apt:
+        pkg:
+          - net-tools
+          - dnsutils
+          - software-properties-common
+        state: present
+        update_cache: yes
