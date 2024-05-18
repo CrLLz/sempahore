@@ -2,14 +2,8 @@
 - hosts: all
   become: true
   tasks:
-    - name: Update all packages to the latest version
-      apt:
-        upgrade: full
-      tags: apt
-    - name: Install a list of packages (suitable replacement for 2.11 loop deprecation warning)
+    - name: Upgrade all packages
       ansible.builtin.yum:
-        name:
-          - net-tools
-          - dnsutils
-          - software-properties-common
-      state: present
+        name: '*'
+      state: latest
+      
