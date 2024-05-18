@@ -10,7 +10,7 @@
         
     # Install network tools
     - name: Install network tools
-      apt:
+      ansible.builtin.apt:
         pkg:
           - net-tools
           - dnsutils
