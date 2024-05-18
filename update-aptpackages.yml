@@ -13,7 +13,6 @@
       apt:
         name:
           - net-tools
-          - dnsutils
           - software-properties-common
       state: present
       update_cache: yes
