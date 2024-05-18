@@ -2,8 +2,17 @@
 - hosts: all
   become: true
   tasks:
-    - name: Upgrade all packages
-      ansible.builtin.yum:
-        name: '*'
-      state: latest
+    # Upgrade packages
+    - name: Upgrade packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        
+    # Install network tools
+    - name: Install network tools
+      apt:
+          - net-tools
+          - dnsutils
+          - software-properties-common
+      state: present
       
