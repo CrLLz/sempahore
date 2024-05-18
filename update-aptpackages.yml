@@ -11,8 +11,9 @@
     # Install network tools
     - name: Install network tools
       apt:
+        pkg:
           - net-tools
           - dnsutils
           - software-properties-common
       state: present
-      
+      update_cache: yes
