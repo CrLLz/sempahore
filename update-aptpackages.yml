@@ -3,10 +3,10 @@
   become: true
   tasks:
     # Upgrade packages
-    - name: Upgrade packages
-      apt:
-        upgrade: yes
-        update_cache: yes
+    - name: Update all packages to their latest version
+      ansible.builtin.apt:
+        name: "*"
+      state: latest
         
     # Install network tools
     - name: Install network tools
