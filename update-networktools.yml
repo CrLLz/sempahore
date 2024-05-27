@@ -1,0 +1,14 @@
+- hosts: all
+
+  tasks:
+    # Install Network Tools
+    - name: Install Network Tools
+      become: true
+      apt:
+        pkg:
+          - net-tools
+          - dnsutils
+          - software-properties-common
+          - tcpdump
+        state: present
+        update_cache: yes
