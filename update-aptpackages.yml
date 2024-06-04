@@ -1,5 +1,5 @@
-- hosts: "{{ hosts }}"
-#- hosts: all
+#- hosts: "{{ hosts }}"
+- hosts: all
 
   tasks:
     # Upgrade packages
