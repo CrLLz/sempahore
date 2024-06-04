@@ -1,5 +1,5 @@
 #- hosts: "{{ Omada }}"
-- hosts: all
+- hosts: servers
 
   tasks:
     # Upgrade packages
