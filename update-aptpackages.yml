@@ -53,9 +53,7 @@
       notify_discord_webhook_token_regex: '^[a-zA-Z0-9_-]+$'
 
     # The content of the notification
-      notify_discord_webhook_content: |-
-        **Message from `{{ inventory_hostname }}` by *Ansible* ** :tada:
-        Reboot required.
+      notify_discord_webhook_content: "Reboot required on {{ inventory_hostname }}"
 
       #You can use any Markdown formatting here [supported by Discord](
       #https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline).
