@@ -65,7 +65,6 @@
     # Ansible inventory.
       notify_discord_send_from_host: localhost
 
-  tasks:
     - name: Send Discord message
       community.general.discord:
         username: "{{ notify_discord_username }}"
