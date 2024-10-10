@@ -17,7 +17,7 @@
       register: reboot_required
 
     - name: Notify discord
-      hosts: "{{ my_hosts | d([]) }}"
+      #hosts: "{{ my_hosts | d([]) }}"
 
       vars:
     # The name that will be shown as sender of the notification. Note
