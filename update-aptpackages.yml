@@ -23,7 +23,7 @@
     # The name that will be shown as sender of the notification. Note
     # that some usernames are blocked by Discord, for example it must
     # not contain the word `discord`.
-      notify_discord_username: Ansible
+      notify_discord_username: "Ansible"
 
     # Your Discord webhook URL should have following format. Please
     # extract following segments of the URL path and set it as value of
