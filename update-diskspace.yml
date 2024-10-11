@@ -39,7 +39,7 @@
             content: "<@&1294264865011273800>" # Tagged Role : @Pings
             embeds:
               - title: "Packages update"
-                description: "Disk space on ***{{ inventory_hostname }}*** is above 10% !\nCurrent usage : {{ disk_usage.stdout[:-1]|int }}"
+                description: "Disk space on ***{{ inventory_hostname }}*** is above 10% !\nCurrent usage : {{ disk_usage.stdout[:-1]|int }}%"
                 footer:
                   text: "Script : update-diskspace.yml"
           when: disk_usage.stdout[:-1]|int > 10
