@@ -37,10 +37,8 @@
                         65643261323030643534643030376336613137643937653139393132343334643436643139656665
                         61623263643865643737
         embeds:
-          - title: "Embedded message"
-            description: "Reboot is required on {{ inventory_hostname }}"
+          - title: "Script : Update packages"
+            description: "Reboot is required on : {{ inventory_hostname }}"
             footer:
-              text: "Scrip: Update packages"
-            image:
-              url: "https://docs.ansible.com/ansible/latest/_static/images/logo_invert.png"   
+              text: "From: " localhost
             #when : reboot_required.stat.exists
