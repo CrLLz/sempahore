@@ -1,5 +1,5 @@
-- hosts: "{{ my_hosts | d([]) }}"
-#- hosts: all
+#- hosts: "{{ my_hosts | d([]) }}"
+- hosts: all
 
   tasks:
     # Upgrade packages
