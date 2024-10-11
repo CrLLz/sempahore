@@ -17,6 +17,7 @@
       register: reboot_required
 
     - name: Send a embedded message to the Discord channel
+      become: true
       community.general.discord:
         webhook_id: !vault |
             $ANSIBLE_VAULT;1.1;AES256
