@@ -38,7 +38,7 @@
                         61623263643865643737
         embeds:
           - title: "Packages update"
-            description: "Reboot is required on : {{ inventory_hostname }}"
+            description: "Reboot is required on :*Italic* **bold** {{ inventory_hostname }}"
             footer:
-              text: "Script : update-aptpackages.yml"
+              text: "Script : update-aptpackages.yml <@425317447302774796>"
             #when : reboot_required.stat.exists
