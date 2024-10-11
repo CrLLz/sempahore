@@ -41,8 +41,8 @@
                         61623263643865643737
         content: "<@&1294264865011273800>"
         embeds:
-          - title: "Packages update"
+          - title: "Network Packages"
             description: "Reboot is required on : ***{{ inventory_hostname }}***"
             footer:
-              text: "Script : update-aptpackages.yml"
+              text: "Script : update-networktools.yml"
       when : reboot_required.stat.exists
