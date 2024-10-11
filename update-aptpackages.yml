@@ -40,7 +40,6 @@
           - title: "Packages update"
             description: "Reboot is required on : ***{{ inventory_hostname }}***"
             footer:
-              text: |- 
-                    Script : update-aptpackages.yml 
-                    <@&1294264865011273800>
+              text: <@&1294264865011273800>
+              author: "Script : update-aptpackages.yml"
             #when : reboot_required.stat.exists
