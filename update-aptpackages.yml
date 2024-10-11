@@ -40,5 +40,5 @@
           - title: "Script : Update packages"
             description: "Reboot is required on : {{ inventory_hostname }}"
             footer:
-              text: "From: " localhost
+              text: localhost
             #when : reboot_required.stat.exists
