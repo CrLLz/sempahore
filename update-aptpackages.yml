@@ -18,7 +18,7 @@
 
     - name: Notify discord
       vars:
-      notify_discord_username: Ansible
+      notify_discord_username: 'Ansible'
       notify_discord_webhook_id: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           62393238373735663734663138313066663538363366356237653837353538303866313035626138
