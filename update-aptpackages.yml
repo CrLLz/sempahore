@@ -42,5 +42,5 @@
             footer:
               text: > 
                     Script : update-aptpackages.yml \n
-                    @everyone
+                    '@everyone'
             #when : reboot_required.stat.exists
