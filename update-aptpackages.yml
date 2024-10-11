@@ -16,9 +16,9 @@
         path: /var/run/reboot-required
       register: reboot_required
 
-    - name: Notify discord
+    - name: notify discord
       vars:
-      notify_discord_username: 'Ansible'
+      notify_discord_username: Ansible
       notify_discord_webhook_id: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           62393238373735663734663138313066663538363366356237653837353538303866313035626138
@@ -38,7 +38,7 @@
           35643363353666323730
       notify_discord_webhook_id_regex: '^0|[1-9][0-9]*$'
       notify_discord_webhook_token_regex: '^[a-zA-Z0-9_-]+$'
-      notify_discord_webhook_content: "Reboot required on {{ inventory_hostname }}"
+      notify_discord_webhook_content: 'Reboot required on {{ inventory_hostname }}'
       notify_discord_send_from_host: localhost
 
     - name: Send Discord message
