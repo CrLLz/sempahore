@@ -17,7 +17,6 @@
       register: reboot_required
 
     - name: Send a embedded message to the Discord channel
-      become: true
       community.general.discord:
         webhook_id: !vault |
                     $ANSIBLE_VAULT;1.1;AES256
@@ -42,4 +41,5 @@
             description: "Reboot is required on : ***{{ inventory_hostname }}***"
             footer:
               text: "Script : update-aptpackages.yml"
-            when : reboot_required.stat.exists
+  
+        when : reboot_required.stat.exists
