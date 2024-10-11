@@ -42,5 +42,5 @@
             footer:
               text: |- 
                     Script : update-aptpackages.yml 
-                    <@1294264865011273800>
+                    <@&1294264865011273800>
             #when : reboot_required.stat.exists
