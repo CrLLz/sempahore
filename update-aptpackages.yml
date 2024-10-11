@@ -37,8 +37,8 @@
                         65643261323030643534643030376336613137643937653139393132343334643436643139656665
                         61623263643865643737
         embeds:
-          - title: "Script : Update packages"
+          - title: "Packages update"
             description: "Reboot is required on : {{ inventory_hostname }}"
             footer:
-              text: localhost
+              text: "Script : update-aptpackages.yml"
             #when : reboot_required.stat.exists
