@@ -36,9 +36,9 @@
                             35303164313665656339326561366565316461643635363466373664656135623836656439316438
                             65643261323030643534643030376336613137643937653139393132343334643436643139656665
                             61623263643865643737
-            content: "<@&1294264865011273800>" # Tagged Role : @Pings
+            #content: "<@&1294264865011273800>" # Tagged Role : @Pings
             embeds:
-              - title: "Packages update"
+              - title: "Disk Check"
                 description: "Disk space on ***{{ inventory_hostname }}*** is above 80% !\nCurrent usage : {{ disk_usage.stdout[:-1]|int }}%"
                 footer:
                   text: "Script : update-diskspace.yml"
