@@ -1,4 +1,5 @@
-- name: Set timezone to Asia/Tokyo
+- name: Set timezone
+  hosts: all
   become: true
   community.general.timezone:
     name: Europe/Brussels
