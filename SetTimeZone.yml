@@ -4,4 +4,4 @@
   tasks:
         - name: Set timezone
           community.general.timezone:
-          name: Europe/Brussels
+            name: Europe/Brussels
