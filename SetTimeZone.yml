@@ -1,8 +1,7 @@
----
-      - hosts: all
-        become: true
-      
-      tasks:
-      - name: Set timezone
-        community.general.timezone:
+- hosts: all
+  become: true
+  
+  tasks:
+        - name: Set timezone
+          community.general.timezone:
           name: Europe/Brussels
