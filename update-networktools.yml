@@ -10,6 +10,7 @@
           - dnsutils
           - software-properties-common
           - tcpdump
+          - cifs-utils
         state: present
         update_cache: yes
 
