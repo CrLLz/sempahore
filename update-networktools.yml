@@ -11,6 +11,7 @@
           - software-properties-common
           - tcpdump
           - cifs-utils
+          - curl
         state: present
         update_cache: yes
 
