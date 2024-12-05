@@ -37,6 +37,3 @@
                             65643261323030643534643030376336613137643937653139393132343334643436643139656665
                             61623263643865643737
             content: "Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%"
-            footer:
-                  text: "Script : m-diskspace.yml"
-          #when: disk_usage.stdout[:-1]|int > 80
