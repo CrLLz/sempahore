@@ -16,7 +16,7 @@
                 current_diskusage: "{{ disk_usage.stdout[:-1]|int }}%"
                 all_diskusage: |
                     {{ all_diskusage }}
-                    Current disk on ***{{ inventory_hostname }}*** is {{ current_diskusage }}
+                    Current disk usage on ***{{ inventory_hostname }}*** is {{ current_diskusage }}
                 
         - name: Display message
             debug:
