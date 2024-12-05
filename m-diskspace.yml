@@ -65,8 +65,8 @@
                             61623263643865643737
             #content: "<@&1294264865011273800>" # Tagged Role : @Pings
             embeds:
-              - title: "Disk Check"
-                description: "Disk space on ***{{ inventory_hostname }}*** is above 80% !\nCurrent usage : {{ disk_usage.stdout[:-1]|int }}%"
-                footer:
-                  text: "Script : update-diskspace.yml"
+              #- title: "Disk Check"
+              - description: "Disk usage on ***{{ inventory_hostname }}*** is above 80% !\nCurrent usage : {{ disk_usage.stdout[:-1]|int }}%"
+                #footer:
+                  #text: "Script : update-diskspace.yml"
           when: disk_usage.stdout[:-1]|int > 80
