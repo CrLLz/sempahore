@@ -12,6 +12,7 @@
           - tcpdump
           - cifs-utils
           - curl
+          - traceroute
         state: present
         update_cache: yes
 
