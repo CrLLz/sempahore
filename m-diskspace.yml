@@ -11,7 +11,17 @@
         - name: Check disk space available
           shell: df -h / | awk 'NR==2 {print $5}'
           register: disk_usage
-    
+        - name: Build message
+            vars:
+                current_diskusage: "{{ disk_usage.stdout[:-1]|int }}%"
+                all_diskusage: |
+                    {{ all_diskusage }}
+                    Current disk on ***{{ inventory_hostname }}*** is {{ current_diskusage }}
+                
+        - name: Display message
+            debug:
+                msg: " Current usage : {{ current_diskusage }}"
+                
         - name: Send a embedded message to the Discord channel
           community.general.discord:
             # https://discord.com/api/webhooks/nnnnnnnnnn/xxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -39,7 +49,8 @@
             #content: "<@&1294264865011273800>" # Tagged Role : @Pings
             embeds:
               - title: "Disk Check"
-                description: "Disk space on ***{{ inventory_hostname }}*** is above 80% !\nCurrent usage : {{ disk_usage.stdout[:-1]|int }}%"
+                #description: "Disk space on ***{{ inventory_hostname }}*** is above 80% !\nCurrent usage : {{ disk_usage.stdout[:-1]|int }}%"
+                description: "{{ all_diskusage }} ""
                 footer:
                   text: "Script : update-diskspace.yml"
-          when: disk_usage.stdout[:-1]|int > 80
+          #when: disk_usage.stdout[:-1]|int > 80
