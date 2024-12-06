@@ -4,10 +4,7 @@
       become: true
       
       tasks:
-        - name: display HOME
-          ansible.builtin.debug:
-            msg: "{{ lookup('env', 'USER') }}"
-          
+      
         - name: Get disk usage
           command: df -h
           register: disk_usage
