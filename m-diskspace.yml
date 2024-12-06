@@ -23,6 +23,6 @@
             #                  webhook_id <----'--------' |                         |
             #                                             |                         |
             #                  webhook_token <------------'-------------------------'
-            webhook_id: $DISCORD_ID_ANSIBLE
-            webhook_token: $DISCORD_TOKEN_ANSIBLE
+            webhook_id: "{{ discord_id_ansible }}"
+            webhook_token: "{{ discord_token_ansible }}"
             content: "Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%"
