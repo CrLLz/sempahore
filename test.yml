@@ -35,6 +35,9 @@
             description: "Reboot is required on : ***{{ inventory_hostname }}***"
             footer:
               text: "Script : update-networktools.yml"
+      register: result
+      notify:
+        - notify failed
       when : reboot_required.stat.exists
 
   handlers:
