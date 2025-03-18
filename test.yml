@@ -44,8 +44,8 @@
         content: "<@&1294264865011273800>"
         embeds:
           - title: "Test Script"
-            description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
+            description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result.stdout }}'
             footer:
               text: "Script : test.yml"
-      when : 
-        - result is failed
+      #when : 
+        #- result is failed
