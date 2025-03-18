@@ -1,6 +1,6 @@
 - hosts: all
   #ignore_unreachable: true
-  ignore_errors: true
+  #ignore_errors: true
   tasks:
     
     - name: Install Network Tools
@@ -40,7 +40,7 @@
           content: "<@&1294264865011273800>"
           embeds:
             - title: "Test Script"
-              description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
+              description: '**Ansible -Failed- message from `{{ inventory_hostname }}`**: {{ result }}'
               footer:
                 text: "Script : test.yml"
         when : 
