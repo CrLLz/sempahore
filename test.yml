@@ -18,28 +18,7 @@
       register: result
       notify:
         - notify failed
-            
-    - name: check if system reboot is required
-      become: true
-      stat:
-        path: /var/run/reboot-required
-      register: reboot_required
-
-    - name: Send a embedded message to the Discord channel
-      community.general.discord:
-        webhook_id: "{{ discord_id_ansible }}"
-        webhook_token: "{{ discord_token_ansible }}"
-        content: "<@&1294264865011273800>"
-        embeds:
-          - title: "Network Packages"
-            description: "Reboot is required on : ***{{ inventory_hostname }}***"
-            footer:
-              text: "Script : update-networktools.yml"
-      register: result
-      notify:
-        - notify failed
-      when : reboot_required.stat.exists
-
+        
   handlers:
       - name: notify failed
         community.general.discord:
