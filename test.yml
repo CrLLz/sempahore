@@ -37,6 +37,10 @@
           state: present
           update_cache: yes
         register: result
+      - name: value to result
+          set_fact:
+            result: `{{ inventory_hostname }}`
+        when: not result
       - name: send notification #if failed
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
