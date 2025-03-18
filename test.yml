@@ -13,7 +13,9 @@
         - debug:
             var: down
       run_once: true
-    
+      
+  ignore_unreachable: true
+  
     - name: Install Network Tools
       become: true
       apt:
