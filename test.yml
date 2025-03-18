@@ -19,7 +19,7 @@
                           List : 
                           
                           **`{{ down }}`**
-                          " "
+                          ' ' 
               footer:
                 text: "Script : {{ playbook_name }}"
         when: down
@@ -42,7 +42,7 @@
                           List : 
                           
                           **`{{ hosts_unreachable }}`**
-                          " "
+                          ' '
               footer:
                 text: "Script : test.yml"
         when: hosts_unreachable | length > 0
