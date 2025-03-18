@@ -1,5 +1,5 @@
 - hosts: all
-  #ignore_unreachable: true
+  ignore_unreachable: true
   #ignore_errors: true
   tasks:
     
