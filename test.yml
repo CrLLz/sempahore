@@ -43,7 +43,7 @@
             - cifs-utils
             - curl
             - traceroute
-            - dnsutils
+            - 1991dnsutils1991
           state: present
           update_cache: yes
         register: result
