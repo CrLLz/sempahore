@@ -1,5 +1,5 @@
 - hosts: all
-  gather_facts: true
+  gather_facts: false
   vars:
     playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
   tasks:
@@ -46,7 +46,7 @@
                              
               footer:
                 text: "Script : test.yml"
-        when: hosts_unreachable
+        when: hosts_unreachable | length > 0
       run_once: true
     
     - block:
