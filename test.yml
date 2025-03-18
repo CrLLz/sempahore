@@ -37,11 +37,7 @@
           state: present
           update_cache: yes
         register: result
-      - name: value to result
-          vars:
-            result: `{{ inventory_hostname }}`
-        when: not result
-      - name: send notification #if failed
+      - name: send notification if failed
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
           webhook_token: "{{ discord_token_ansible }}"
@@ -53,4 +49,4 @@
                           `{{ result }}`
               footer:
                 text: "Script : test.yml"
-        #when: "'failed': True" in {{ result }}
+        when: "'failed': True" in {{ result }}
