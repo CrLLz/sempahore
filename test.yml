@@ -34,6 +34,30 @@
                 text: "Script : test.yml"
         when: down
       run_once: true
+
+    - block:
+      - set_fact:
+          hosts_unreachable: "{{ hostvars|dict2items|json_query(_query) }}"
+        vars:
+          _query: "[?value.result.unreachable].{host: key, msg: value.result.msg}"
+        run_once: true
+      - name: send notification if any host is unreachable
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Host Unreachable 2"
+              description: | 
+                          List : 
+                          
+                          **`{{ hosts_unreachable }}`**
+                          " "
+              footer:
+                text: "Script : test.yml"
+        when: hosts_unreachable
+      run_once: true
+    
     - block:
       - name: Install Network Tools
         ignore_errors: true
