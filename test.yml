@@ -45,6 +45,6 @@
             - title: "Test Script"
               description: |
                           **Ansible message from `{{ inventory_hostname }}`** :
-                          "{{ result.stdout }}"
+                          result
               footer:
                 text: "Script : test.yml"
