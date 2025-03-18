@@ -1,36 +1,63 @@
+---
 - hosts: all
-
+  gather_facts: true
+  
+  vars:
+    playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
+    
   tasks:
-    # Install Network Tools
-    - name: Install Network Tools
-      become: true
-      apt:
-        pkg:
-          - net-tools
-          - dnsutils
-          - software-properties-common
-          - tcpdump
-          - cifs-utils
-          - curl
-          - traceroute
-        state: present
-        update_cache: yes
 
-    # Check if reboot is required
-    - name: check if system reboot is required
-      become: true
-      stat:
-        path: /var/run/reboot-required
-      register: reboot_required
+    - block:
+      - set_fact:
+          down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
+      - name: send notification if any host is unreachable
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Host Unreachable"
+              description: | 
+                          List : 
+                          
+                          **`{{ down }}`**
+                          .
+              footer:
+                text: "Script : {{ playbook_name }}"
+        when: down
+      run_once: true
 
-    - name: Send a embedded message to the Discord channel
-      community.general.discord:
-        webhook_id: "{{ discord_id_ansible }}"
-        webhook_token: "{{ discord_token_ansible }}"
-        content: "<@&1294264865011273800>"
-        embeds:
-          - title: "Network Packages"
-            description: "Reboot is required on : ***{{ inventory_hostname }}***"
-            footer:
-              text: "Script : update-networktools.yml"
-      when : reboot_required.stat.exists
+  
+    - block:
+      - name: Install Network Tools
+        ignore_errors: true
+        become: true
+        apt:
+          pkg:
+            - net-tools
+            - dnsutils
+            - software-properties-common
+            - tcpdump
+            - cifs-utils
+            - curl
+            - traceroute
+            - dnsutils
+          state: present
+          update_cache: yes
+        register: result
+      - name: send notification if failed
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Task Failed"
+              description: |
+                          Host : **`{{ inventory_hostname }}`**
+
+                          Recap : 
+                          `{{ result }}`
+                          .
+              footer:
+                text: "Script : {{ playbook_name }}"
+        when: result.failed == True
