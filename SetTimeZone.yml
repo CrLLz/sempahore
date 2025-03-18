@@ -1,7 +1,50 @@
+---
 - hosts: all
   become: true
   
+  vars:
+    playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
+  
   tasks:
-        - name: Set timezone
-          community.general.timezone:
-            name: Europe/Brussels
+  
+    - block:
+      - set_fact:
+          down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
+      - name: send notification if any host is unreachable
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Host Unreachable"
+              description: | 
+                          List : 
+                          
+                          **`{{ down }}`**
+                          .
+              footer:
+                text: "Script : {{ playbook_name }}"
+        when: down
+      run_once: true
+      
+      - name: Set timezone
+         community.general.timezone:
+           name: Europe/Brussels
+         register: result
+      
+      - name: send notification if failed
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Task Failed"
+              description: |
+                          Host : **`{{ inventory_hostname }}`**
+
+                          Recap : 
+                          `{{ result }}`
+                          .
+              footer:
+                text: "Script : {{ playbook_name }}"
+        when: result.failed == True
