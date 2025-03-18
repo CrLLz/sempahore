@@ -6,7 +6,7 @@
 
   vars:
     playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
-   
+    usage_list: []
       
   tasks:
 
@@ -22,11 +22,11 @@
             - title: "Host Unreachable"
               description: | 
                           List : 
+                          --------------------------------------------
                           {% for item in down -%}                                               
-                          **{{ 
-                          item 
-                          }}**                                                           
+                          **{{ item }}**                                                           
                           {% endfor %}
+                          --------------------------------------------
               footer:
                 text: "Script : {{ playbook_name }}"
         when: down
@@ -35,6 +35,10 @@
     - name: Get disk usage
       shell: df -h / | awk 'NR==2 {print $5}'
       register: disk_usage
+
+    - name: Add element to a list
+      set_fact:
+        usage_list: "{{ usage_list + ['Current disk usage on {{ inventory_hostname }}  :  {{ disk_usage.stdout[:-1]|int }}%'] }}"
     
     - name: Send a message to the Discord channel
       community.general.discord:
@@ -45,5 +49,11 @@
       #                  webhook_token <------------'-------------------------'
         webhook_id: "{{ discord_id_ansible }}"
         webhook_token: "{{ discord_token_ansible }}"
-        content: "Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%"
+        content: | 
+                List : 
+                --------------------------------------------
+                {% for item in usage_list -%}                                               
+                {{ item }}                                                           
+                {% endfor %}
+                --------------------------------------------
       run_once: true
