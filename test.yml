@@ -49,4 +49,4 @@
                           `{{ result }}`
               footer:
                 text: "Script : test.yml"
-        when: '"''failed'': True" in "{{ result }}'
+        when: '"''failed'': True" in result.stdout'
