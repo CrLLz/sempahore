@@ -4,53 +4,47 @@
   #ignore_errors: true
   tasks:
     - block:
-        - set_fact:
-            down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
-        - name: send notification if any host is unreachable
-          community.general.discord:
-            webhook_id: "{{ discord_id_ansible }}"
-            webhook_token: "{{ discord_token_ansible }}"
-            content: "<@&1294264865011273800>"
-            embeds:
-              - title: "Test Script"
-                description: | 
-                            **The following hosts are unreachable** : 
-                            `{{ down }}`
-                footer:
-                  text: "Script : test.yml"
-          when: not down
+      - set_fact:
+          down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
+      - name: send notification if any host is unreachable
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Test Script"
+              description: | 
+                          **The following hosts are unreachable** : 
+                          `{{ down }}`
+              footer:
+                text: "Script : test.yml"
+        when: down
       run_once: true
-  
-    - name: Install Network Tools
-      become: true
-      apt:
-        pkg:
-          - net-tools
-          - dnsutils
-          - software-properties-common
-          - tcpdump
-          - cifs-utils
-          - curl
-          - traceroute
-          - 1991dnsutils1991
-        state: present
-        update_cache: yes
-      register: result
-
-    - debug:
-        var: result
-
-    - name: send notification if failed
-      community.general.discord:
-        webhook_id: "{{ discord_id_ansible }}"
-        webhook_token: "{{ discord_token_ansible }}"
-        content: "<@&1294264865011273800>"
-        embeds:
-          - title: "Test Script"
-            description: |
-                        **Ansible message from `{{ inventory_hostname }}`** :
-                        `{{ result }}`
-            footer:
-              text: "Script : test.yml"
-      #when : 
-        #- result is failed
+    - block:
+      - name: Install Network Tools
+        become: true
+        apt:
+          pkg:
+            - net-tools
+            - dnsutils
+            - software-properties-common
+            - tcpdump
+            - cifs-utils
+            - curl
+            - traceroute
+            - 1991dnsutils1991
+          state: present
+          update_cache: yes
+        register: result
+      - name: send notification if failed
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Test Script"
+              description: |
+                          **Ansible message from `{{ inventory_hostname }}`** :
+                          `{{ result }}`
+              footer:
+                text: "Script : test.yml"
