@@ -5,12 +5,16 @@
   vars:
     playbook_absoluteName: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split() | select('match','^.*[.]ya?ml$') | list | first }}"
     playbook_baseName: "{{ playbook_absoluteName | basename }}"
+    playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
   tasks:
     - debug:
         var: item
       loop:
         - "{{ playbook_absoluteName }}"
         - "{{ playbook_baseName }}"
+    - name: test
+      debug:
+        msg: "playbook name : {{ playbook_name }}"
     - block:
       - set_fact:
           down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
@@ -20,12 +24,12 @@
           webhook_token: "{{ discord_token_ansible }}"
           content: "<@&1294264865011273800>"
           embeds:
-            - title: "Error - Unreachable"
+            - title: "Host Unreachable"
               description: | 
-                          The following hosts are unreachable : 
+                          List : 
                           
                           **`{{ down }}`**
-                          
+                          " "
               footer:
                 text: "Script : test.yml"
         when: down
@@ -55,10 +59,11 @@
           embeds:
             - title: "Task Failed"
               description: |
-                          The task for the following host failed : **`{{ inventory_hostname }}`**
+                          Host : **`{{ inventory_hostname }}`**
 
-                          Recap : `{{ result }}`
-                          
+                          Recap : 
+                          `{{ result }}`
+                          " "
               footer:
                 text: "Script : test.yml"
         when: result.failed == True
