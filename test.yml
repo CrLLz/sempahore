@@ -22,15 +22,15 @@
     - meta: flush_handlers
 
     - name: discord failed
-        community.general.discord:
-          webhook_id: "{{ discord_id_ansible }}"
-          webhook_token: "{{ discord_token_ansible }}"
-          content: "<@&1294264865011273800>"
-          embeds:
-            - title: "Test Script"
-              description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
-              footer:
-                text: "Script : test.yml"
+      community.general.discord:
+        webhook_id: "{{ discord_id_ansible }}"
+        webhook_token: "{{ discord_token_ansible }}"
+        content: "<@&1294264865011273800>"
+        embeds:
+          - title: "Test Script"
+            description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
+            footer:
+              text: "Script : test.yml"
         
   handlers:
       - name: notify failed
