@@ -23,7 +23,9 @@
               description: | 
                           List : 
                           
-                          **`{{ down }}`**
+                          {% for item in down -%}                                               
+                          **{{ item }}**                                                           
+                          {% endfor %}
                           .
               footer:
                 text: "Script : {{ playbook_name }}"
@@ -37,10 +39,6 @@
     - name: Check disk space available
       shell: df -h / | awk 'NR==2 {print $5}'
       register: disk_usage
-
-    - name: Pause for 1 second to avoid being rate limited on discord
-      ansible.builtin.pause:
-        seconds: 1
     
     - name: Send a message to the Discord channel
       community.general.discord:
@@ -52,3 +50,4 @@
         webhook_id: "{{ discord_id_ansible }}"
         webhook_token: "{{ discord_token_ansible }}"
         content: "Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%"
+      run_once: true
