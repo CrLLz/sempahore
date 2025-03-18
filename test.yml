@@ -16,8 +16,8 @@
         state: present
         update_cache: yes
         register: result
-        notify:
-          - notify failed
+      notify:
+        - notify failed
             
     - name: check if system reboot is required
       become: true
