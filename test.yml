@@ -38,7 +38,7 @@
           update_cache: yes
         register: result
       - name: value to result
-          set_fact:
+          vars:
             result: `{{ inventory_hostname }}`
         when: not result
       - name: send notification #if failed
