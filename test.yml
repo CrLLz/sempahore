@@ -19,6 +19,7 @@
       register: result
       notify:
         - notify failed
+    - meta: flush_handlers
         
   handlers:
       - name: notify failed
