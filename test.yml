@@ -38,7 +38,7 @@
 
     - name: Add element to a list
       set_fact:
-        usage_list: "{{ usage_list + ['Current disk usage on {{ inventory_hostname }}  :  {{ disk_usage.stdout[:-1]|int }}%'] }}"
+        usage_list: "{{ usage_list + ['Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%'] }}"
     
     - name: Send a message to the Discord channel
       community.general.discord:
