@@ -21,7 +21,7 @@
         - notify failed
     - meta: flush_handlers
 
-    - name: notify failed
+    - name: discord failed
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
           webhook_token: "{{ discord_token_ansible }}"
