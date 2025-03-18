@@ -1,6 +1,7 @@
 ---
 - name: Set TimeZone Brussels
   hosts: all
+  gather_facts: true
   become: true
   
   vars:
