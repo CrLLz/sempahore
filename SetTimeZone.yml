@@ -30,6 +30,7 @@
       run_once: true
       
     - name: Set timezone
+      ignore_errors: true
       community.general.timezone:
         name: Europe/Brussels
       register: result
