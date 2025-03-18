@@ -12,9 +12,18 @@
             down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
         - debug:
             var: down
+        - name: send notification if any host is unreachable
+          community.general.discord:
+            webhook_id: "{{ discord_id_ansible }}"
+            webhook_token: "{{ discord_token_ansible }}"
+            content: "<@&1294264865011273800>"
+            embeds:
+              - title: "Test Script"
+                description: '**Ansible message from `{{ inventory_hostname }}`**: unreachable'
+                footer:
+                  text: "Script : test.yml"
+          when: down.stderr | length > 0
       run_once: true
-      
-  ignore_unreachable: true
   
     - name: Install Network Tools
       become: true
@@ -31,7 +40,7 @@
         update_cache: yes
       register: result
 
-    - name: discord failed
+    - name: send notification if failed
       community.general.discord:
         webhook_id: "{{ discord_id_ansible }}"
         webhook_token: "{{ discord_token_ansible }}"
@@ -43,4 +52,3 @@
               text: "Script : test.yml"
       when : 
         - result is failed
-        - result is unreachable
