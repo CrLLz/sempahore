@@ -2,7 +2,15 @@
   gather_facts: true
   #ignore_unreachable: true
   #ignore_errors: true
+  vars:
+    playbook_absoluteName: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split() | select('match','^.*[.]ya?ml$') | list | first }}"
+    playbook_baseName: "{{ playbook_absoluteName | basename }}"
   tasks:
+    - debug:
+        var: item
+      loop:
+        - "{{ playbook_absoluteName }}"
+        - "{{ playbook_baseName }}"
     - block:
       - set_fact:
           down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
@@ -12,10 +20,12 @@
           webhook_token: "{{ discord_token_ansible }}"
           content: "<@&1294264865011273800>"
           embeds:
-            - title: "Test Script"
+            - title: "Error - Unreachable"
               description: | 
-                          **The following hosts are unreachable** : 
-                          `{{ down }}`
+                          The following hosts are unreachable : 
+                          
+                          **`{{ down }}`**
+                          
               footer:
                 text: "Script : test.yml"
         when: down
@@ -37,19 +47,18 @@
           state: present
           update_cache: yes
         register: result
-        
-      - debug: var=result
-          
       - name: send notification if failed
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
           webhook_token: "{{ discord_token_ansible }}"
           content: "<@&1294264865011273800>"
           embeds:
-            - title: "Test Script"
+            - title: "Task Failed"
               description: |
-                          **Ansible message from `{{ inventory_hostname }}`** :
-                          `{{ result }}`
+                          The task for the following host failed : **`{{ inventory_hostname }}`**
+
+                          Recap : `{{ result }}`
+                          
               footer:
                 text: "Script : test.yml"
         when: result.failed == True
