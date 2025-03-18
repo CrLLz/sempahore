@@ -1,10 +1,13 @@
 ---
-- hosts: all
+- name: Check disk space
+  hosts: all
   gather_facts: true
-  
+  become: true
+
   vars:
     playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
-    
+   
+      
   tasks:
 
     - block:
@@ -26,38 +29,26 @@
                 text: "Script : {{ playbook_name }}"
         when: down
       run_once: true
+      
+    - name: Get disk usage
+      command: df -h
+      register: disk_usage
 
-  
-    - block:
-      - name: Install Network Tools
-        ignore_errors: true
-        become: true
-        apt:
-          pkg:
-            - net-tools
-            - dnsutils
-            - software-properties-common
-            - tcpdump
-            - cifs-utils
-            - curl
-            - traceroute
-            - 1991dnsutils1991
-          state: present
-          update_cache: yes
-        register: result
-      - name: send notification if failed
-        community.general.discord:
-          webhook_id: "{{ discord_id_ansible }}"
-          webhook_token: "{{ discord_token_ansible }}"
-          content: "<@&1294264865011273800>"
-          embeds:
-            - title: "Task Failed"
-              description: |
-                          Host : **`{{ inventory_hostname }}`**
+    - name: Check disk space available
+      shell: df -h / | awk 'NR==2 {print $5}'
+      register: disk_usage
 
-                          Recap : 
-                          `{{ result }}`
-                          .
-              footer:
-                text: "Script : {{ playbook_name }}"
-        when: result.failed == True
+    - name: Pause for 1 second to avoid being rate limited on discord
+      ansible.builtin.pause:
+        seconds: 1
+    
+    - name: Send a message to the Discord channel
+      community.general.discord:
+      # https://discord.com/api/webhooks/nnnnnnnnnn/xxxxxxxxxxxxxxxxxxxxxxxxxxx
+      #                                  |        | |                         |
+      #                  webhook_id <----'--------' |                         |
+      #                                             |                         |
+      #                  webhook_token <------------'-------------------------'
+        webhook_id: "{{ discord_id_ansible }}"
+        webhook_token: "{{ discord_token_ansible }}"
+        content: "Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%"
