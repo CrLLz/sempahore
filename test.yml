@@ -24,6 +24,9 @@
       run_once: true
 
     - block:
+      - ping:
+        register: result
+        ignore_unreachable: true
       - set_fact:
           hosts_unreachable: "{{ hostvars|dict2items|json_query(_query) }}"
         vars:
@@ -43,7 +46,7 @@
                              
               footer:
                 text: "Script : test.yml"
-        #when: hosts_unreachable|length > 0
+        when: hosts_unreachable
       run_once: true
     
     - block:
