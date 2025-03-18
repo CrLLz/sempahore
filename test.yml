@@ -1,14 +1,9 @@
 ---
-- name: Check disk space
-  hosts: all
+- hosts: all
   gather_facts: true
-  become: true
-
+  
   vars:
     playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
-    usage_list: []
-    nbr: "{{ ansible_play_hosts_all|length }}"
-    i: 0
     
   tasks:
 
@@ -26,7 +21,7 @@
                           List : 
                           --------------------------------------------
                           {% for item in down -%}                                               
-                          **{{ item }}**                                                           
+                          **{{ item }}**                                                          
                           {% endfor %}
                           --------------------------------------------
               footer:
@@ -34,39 +29,40 @@
         when: down
       run_once: true
 
-    - name: Get disk usage
-      shell: df -h / | awk 'NR==2 {print $5}'
-      register: disk_usage
+  
+    - block:
+      - name: Install Network Tools
+        ignore_errors: true
+        become: true
+        apt:
+          pkg:
+            - net-tools
+            - dnsutils
+            - software-properties-common
+            - tcpdump
+            - cifs-utils
+            - curl
+            - traceroute
+            - dnsutils
+          state: present
+          update_cache: yes
+        register: result
+      - name: send notification if failed
+        community.general.discord:
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Task Failed"
+              description: |
+                          Host : **`{{ inventory_hostname }}`**
 
-    - name: Add element to a list
-      set_fact:
-        usage_list: "{{ usage_list + ['***{{ inventory_hostname }}***   :   {{ disk_usage.stdout[:-1]|int }}%'] }}"
-        
-    - name: Increment host count
-      set_fact: i={{ i | int + 1 }}
-        
-    - name: Send a message to the Discord channel
-      community.general.discord:
-      # https://discord.com/api/webhooks/nnnnnnnnnn/xxxxxxxxxxxxxxxxxxxxxxxxxxx
-      #                                  |        | |                         |
-      #                  webhook_id <----'--------' |                         |
-      #                                             |                         |
-      #                  webhook_token <------------'-------------------------'
-        webhook_id: "{{ discord_id_ansible }}"
-        webhook_token: "{{ discord_token_ansible }}"
-        embeds:
-            - title: "Disk Usage"
-              description: | 
-                          Host : 
+                          Recap : 
                           --------------------------------------------
-                          {% for item in usage_list -%}                                               
-                          {{ item }}                                                          
+                          {% for item in result -%}                                               
+                          **{{ item }}**                                                          
                           {% endfor %}
                           --------------------------------------------
               footer:
                 text: "Script : {{ playbook_name }}"
-      when: i == nbr
-    - debug:
-        var: nbr
-    - debug:
-        var: i
+        when: result.failed == True
