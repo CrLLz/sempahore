@@ -19,7 +19,7 @@
             content: "<@&1294264865011273800>"
             embeds:
               - title: "Test Script"
-                description: '**Ansible message from `{{ inventory_hostname }}`**: unreachable'
+                description: '**The following hosts are unreachable** : `{{ inventory_hostname }}`'
                 footer:
                   text: "Script : test.yml"
           when: down.stderr | length > 0
