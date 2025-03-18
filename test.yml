@@ -3,18 +3,8 @@
   #ignore_unreachable: true
   #ignore_errors: true
   vars:
-    playbook_absoluteName: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split() | select('match','^.*[.]ya?ml$') | list | first }}"
-    playbook_baseName: "{{ playbook_absoluteName | basename }}"
     playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
   tasks:
-    - debug:
-        var: item
-      loop:
-        - "{{ playbook_absoluteName }}"
-        - "{{ playbook_baseName }}"
-    - name: test
-      debug:
-        msg: "playbook name : {{ playbook_name }}"
     - block:
       - set_fact:
           down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
@@ -31,7 +21,7 @@
                           **`{{ down }}`**
                           " "
               footer:
-                text: "Script : test.yml"
+                text: "Script : {{ playbook_name }}"
         when: down
       run_once: true
 
@@ -41,7 +31,7 @@
         vars:
           _query: "[?value.result.unreachable].{host: key, msg: value.result.msg}"
         run_once: true
-      - name: send notification if any host is unreachable
+      - name: send notification if any host is unreachable 2
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
           webhook_token: "{{ discord_token_ansible }}"
@@ -55,7 +45,7 @@
                           " "
               footer:
                 text: "Script : test.yml"
-        when: hosts_unreachable
+        when: hosts_unreachable | length > 0
       run_once: true
     
     - block:
@@ -89,5 +79,5 @@
                           `{{ result }}`
                           " "
               footer:
-                text: "Script : test.yml"
+                text: "Script : {{ playbook_name }}"
         when: result.failed == True
