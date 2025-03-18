@@ -39,5 +39,6 @@
             description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
             footer:
               text: "Script : test.yml"
-      when : result is failed
-      
+      when : 
+        - result is failed
+        - result is unreachable
