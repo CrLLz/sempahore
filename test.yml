@@ -38,7 +38,7 @@
       when : reboot_required.stat.exists
 
   handlers:
-      - notify failed
+      - name: notify failed
         community.general.discord:
         webhook_id: "{{ discord_id_ansible }}"
         webhook_token: "{{ discord_token_ansible }}"
