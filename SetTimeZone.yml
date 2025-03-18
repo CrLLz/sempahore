@@ -27,24 +27,23 @@
         when: down
       run_once: true
       
-      - name: Set timezone
-         community.general.timezone:
-           name: Europe/Brussels
-         register: result
+    - name: Set timezone
+      community.general.timezone:
+        name: Europe/Brussels
+      register: result
       
-      - name: send notification if failed
-        community.general.discord:
-          webhook_id: "{{ discord_id_ansible }}"
-          webhook_token: "{{ discord_token_ansible }}"
-          content: "<@&1294264865011273800>"
-          embeds:
-            - title: "Task Failed"
-              description: |
-                          Host : **`{{ inventory_hostname }}`**
-
-                          Recap : 
-                          `{{ result }}`
-                          .
-              footer:
-                text: "Script : {{ playbook_name }}"
-        when: result.failed == True
+    - name: send notification if failed
+      community.general.discord:
+        webhook_id: "{{ discord_id_ansible }}"
+        webhook_token: "{{ discord_token_ansible }}"
+        content: "<@&1294264865011273800>"
+        embeds:
+          - title: "Task Failed"
+            description: |
+                        Host : **`{{ inventory_hostname }}`**
+                        Recap : 
+                        `{{ result }}`
+                        .
+            footer:
+              text: "Script : {{ playbook_name }}"
+      when: result.failed == True
