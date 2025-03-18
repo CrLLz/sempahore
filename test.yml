@@ -18,7 +18,7 @@
                             `{{ down }}`
                 footer:
                   text: "Script : test.yml"
-          when: down
+          when: not down
       run_once: true
   
     - name: Install Network Tools
