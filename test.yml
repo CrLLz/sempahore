@@ -43,7 +43,7 @@
               description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
               footer:
                 text: "Script : test.yml"
-      when : 
-        - "'FAILED' in result.stderr"
-        - "'UNREACHABLE' in result.stderr"
+        when : 
+          - "'FAILED' in result.stderr"
+          - "'UNREACHABLE' in result.stderr"
       
