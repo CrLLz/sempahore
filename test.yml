@@ -50,10 +50,13 @@
         webhook_id: "{{ discord_id_ansible }}"
         webhook_token: "{{ discord_token_ansible }}"
         content: | 
-                List : 
-                --------------------------------------------
                 {% for item in usage_list -%}                                               
                 {{ item }}                                                           
                 {% endfor %}
-                --------------------------------------------
-      run_once: true
+      when: inventory_hostname != ansible_play_hosts_all[-1]
+
+    - debug:                                                                    
+        msg: |                                                                  
+          {% for item in usage_list -%}                                               
+          {{ item }}                                                            
+          {% endfor %} 
