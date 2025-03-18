@@ -51,4 +51,4 @@
         
     - name: Pause for 1 second to avoid being rate limited on discord
       ansible.builtin.pause:
-        seconds: 1
+        seconds: 3
