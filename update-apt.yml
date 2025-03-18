@@ -96,5 +96,5 @@
               - title: "Packages update"
                 description: "Reboot is required on : ***{{ inventory_hostname }}***"
                 footer:
-                  text: "Script : update-apt.yml"
+                  text: "Script : {{ playbook_name }}"
           when : reboot_required.stat.exists
