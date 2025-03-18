@@ -64,3 +64,7 @@
               footer:
                 text: "Script : {{ playbook_name }}"
       when: i == nbr
+    - debug:
+        var: nbr
+    - debug:
+        var: i
