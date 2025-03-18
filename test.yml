@@ -43,7 +43,7 @@
                              
               footer:
                 text: "Script : test.yml"
-        when: hosts_unreachable.stderr|length > 0
+        #when: hosts_unreachable|length > 0
       run_once: true
     
     - block:
