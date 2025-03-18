@@ -77,7 +77,6 @@
                     text: "Script : {{ playbook_name }}"
             when: result_upgradee.failed == True
 
-        # Check if reboot is required
         - name: check if system reboot is required
           stat:
             path: /var/run/reboot-required
