@@ -1,7 +1,18 @@
 - hosts: all
+  gather_facts: true
   ignore_unreachable: true
   #ignore_errors: true
   tasks:
+    - block:
+        - debug:
+            var: ansible_play_hosts_all
+        - debug:
+            var: ansible_play_hosts
+        - set_fact:
+            down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
+        - debug:
+            var: down
+      run_once: true
     
     - name: Install Network Tools
       become: true
@@ -19,7 +30,6 @@
       register: result
       notify:
         - notify failed
-    - meta: flush_handlers
 
     - name: discord failed
       community.general.discord:
@@ -31,19 +41,7 @@
             description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
             footer:
               text: "Script : test.yml"
-        
-  handlers:
-      - name: notify failed
-        community.general.discord:
-          webhook_id: "{{ discord_id_ansible }}"
-          webhook_token: "{{ discord_token_ansible }}"
-          content: "<@&1294264865011273800>"
-          embeds:
-            - title: "Test Script"
-              description: '**Ansible -Failed- message from `{{ inventory_hostname }}`**: {{ result }}'
-              footer:
-                text: "Script : test.yml"
-        when : 
-          - "'FAILED' in result.stderr"
-          - "'UNREACHABLE' in result.stderr"
+      when : 
+        - "'FAILED' in result.stderr"
+        - "'UNREACHABLE' in result.stderr"
       
