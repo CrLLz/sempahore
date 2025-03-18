@@ -48,3 +48,7 @@
         webhook_id: "{{ discord_id_ansible }}"
         webhook_token: "{{ discord_token_ansible }}"
         content: "Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%"
+        
+    - name: Pause for 1 second to avoid being rate limited on discord
+      ansible.builtin.pause:
+        seconds: 1
