@@ -37,6 +37,9 @@
           state: present
           update_cache: yes
         register: result
+        
+      - debug: var=result
+          
       - name: send notification if failed
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
@@ -49,4 +52,4 @@
                           `{{ result }}`
               footer:
                 text: "Script : test.yml"
-        when: "'failed': True in result"
+        when: result.failed == True
