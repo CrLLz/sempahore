@@ -15,7 +15,7 @@
           - traceroute
         state: present
         update_cache: yes
-        register: result
+      register: result
       notify:
         - notify failed
             
