@@ -40,13 +40,13 @@
   handlers:
       - name: notify failed
         community.general.discord:
-        webhook_id: "{{ discord_id_ansible }}"
-        webhook_token: "{{ discord_token_ansible }}"
-        content: "<@&1294264865011273800>"
-        embeds:
-          - title: "Test Script"
-            description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
-            footer:
-              text: "Script : test.yml"
+          webhook_id: "{{ discord_id_ansible }}"
+          webhook_token: "{{ discord_token_ansible }}"
+          content: "<@&1294264865011273800>"
+          embeds:
+            - title: "Test Script"
+              description: '**Ansible message from `{{ inventory_hostname }}`**: {{ result }}'
+              footer:
+                text: "Script : test.yml"
       #when : "'FAILED' in result.stderr"
       
