@@ -38,7 +38,7 @@
 
     - name: Add element to a list
       set_fact:
-        usage_list: "{{ usage_list + ['Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%'] }}"
+        usage_list: "{{ usage_list + ['***{{ inventory_hostname }}***   :   {{ disk_usage.stdout[:-1]|int }}%'] }}"
     
     - name: Send a message to the Discord channel
       community.general.discord:
@@ -49,8 +49,15 @@
       #                  webhook_token <------------'-------------------------'
         webhook_id: "{{ discord_id_ansible }}"
         webhook_token: "{{ discord_token_ansible }}"
-        content: | 
-                {% for item in usage_list -%}                                               
-                {{ item }}                                                           
-                {% endfor %}
+        embeds:
+            - title: "Disk Usage"
+              description: | 
+                          Host : 
+                          --------------------------------------------
+                          {% for item in usage_list -%}                                               
+                          {{ item }}                                                          
+                          {% endfor %}
+                          --------------------------------------------
+              footer:
+                text: "Script : {{ playbook_name }}"
       when: inventory_hostname != ansible_play_hosts_all[-1]
