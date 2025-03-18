@@ -31,12 +31,8 @@
                 text: "Script : {{ playbook_name }}"
         when: down
       run_once: true
-      
-    #- name: Get disk usage
-    #  command: df -h
-    #  register: disk_usage
 
-    - name: Check disk space available
+    - name: Get disk usage
       shell: df -h / | awk 'NR==2 {print $5}'
       register: disk_usage
     
