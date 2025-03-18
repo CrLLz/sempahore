@@ -54,9 +54,3 @@
                 {{ item }}                                                           
                 {% endfor %}
       when: inventory_hostname != ansible_play_hosts_all[-1]
-
-    - debug:                                                                    
-        msg: |                                                                  
-          {% for item in usage_list -%}                                               
-          {{ item }}                                                            
-          {% endfor %} 
