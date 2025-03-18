@@ -37,6 +37,9 @@
         update_cache: yes
       register: result
 
+    - debug:
+        var: result
+
     - name: send notification if failed
       community.general.discord:
         webhook_id: "{{ discord_id_ansible }}"
