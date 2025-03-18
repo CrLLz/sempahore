@@ -47,9 +47,6 @@
               description: |
                           **Ansible message from `{{ inventory_hostname }}`** :
                           `{{ result }}`
-
-                          result
-                          
               footer:
                 text: "Script : test.yml"
-        #when: '"''failed'': True" in result'
+        when: "'failed': True in result"
