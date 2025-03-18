@@ -1,8 +1,12 @@
+---
 - hosts: all
   gather_facts: false
+  
   vars:
     playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
+    
   tasks:
+
     - block:
       - set_fact:
           down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
@@ -17,38 +21,13 @@
                           List : 
                           
                           **`{{ down }}`**
-                              
+                          .
               footer:
                 text: "Script : {{ playbook_name }}"
         when: down
       run_once: true
 
-    - block:
-      - ping:
-        register: result
-        ignore_unreachable: true
-      - set_fact:
-          hosts_unreachable: "{{ hostvars|dict2items|json_query(_query) }}"
-        vars:
-          _query: "[?value.result.unreachable].{host: key, msg: value.result.msg}"
-        run_once: true
-      - name: send notification if any host is unreachable 2
-        community.general.discord:
-          webhook_id: "{{ discord_id_ansible }}"
-          webhook_token: "{{ discord_token_ansible }}"
-          content: "<@&1294264865011273800>"
-          embeds:
-            - title: "Host Unreachable 2"
-              description: | 
-                          List : 
-                          
-                          **`{{ hosts_unreachable }}`**
-                             
-              footer:
-                text: "Script : test.yml"
-        when: hosts_unreachable | length > 0
-      run_once: true
-    
+  
     - block:
       - name: Install Network Tools
         ignore_errors: true
@@ -78,7 +57,7 @@
 
                           Recap : 
                           `{{ result }}`
-                             
+                          .
               footer:
                 text: "Script : {{ playbook_name }}"
         when: result.failed == True
