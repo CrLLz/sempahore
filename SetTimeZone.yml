@@ -20,10 +20,11 @@
           embeds:
             - title: "Host Unreachable"
               description: | 
-                          List : 
-                          
-                          **`{{ down }}`**
-                          .
+                          --------------------------------------------
+                          {% for item in down -%}                                               
+                          **{{ item }}**                                                          
+                          {% endfor %}
+                          --------------------------------------------
               footer:
                 text: "Script : {{ playbook_name }}"
         when: down
