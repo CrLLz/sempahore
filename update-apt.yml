@@ -1,31 +1,81 @@
 ---
     - name: Update and upgrade apt packages
       hosts: all
+      gather_facts: true
       become: true
+
+      vars:
+          playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
       
       tasks:
+
+        - block:
+          - set_fact:
+              down: "{{ ansible_play_hosts_all|difference(ansible_play_hosts) }}"
+          - name: send notification if any host is unreachable
+            community.general.discord:
+              webhook_id: "{{ discord_id_ansible }}"
+              webhook_token: "{{ discord_token_ansible }}"
+              content: "<@&1294264865011273800>"
+              embeds:
+                - title: "Host Unreachable"
+                  description: | 
+                              List : 
+                          
+                              **`{{ down }}`**
+                              .
+                  footer:
+                    text: "Script : {{ playbook_name }}"
+            when: down
+          run_once: true
+      
         - name: Update packages with apt
+          ignore_errors: true
           when: ansible_pkg_mgr == 'apt'
           ansible.builtin.apt:
             update_cache: true
+          register: result_update
     
-#        - name: Update packages with yum
-#          when: ansible_pkg_mgr == 'yum'
-#          ansible.builtin.yum:
-#            name: '*'
-#            state: latest # noqa: package-latest
+        - name: send notification if update failed
+          community.general.discord:
+              webhook_id: "{{ discord_id_ansible }}"
+              webhook_token: "{{ discord_token_ansible }}"
+              content: "<@&1294264865011273800>"
+              embeds:
+                - title: "Update Failed"
+                  description: |
+                              Host : **`{{ inventory_hostname }}`**
+
+                              Recap : 
+                              `{{ result_update }}`
+                              .
+                  footer:
+                    text: "Script : {{ playbook_name }}"
+            when: result_update.failed == True
     
         - name: Upgrade packages with apt
+          ignore_errors: true
           when: ansible_pkg_mgr == 'apt'
           ansible.builtin.apt:
             upgrade: dist
+          register: result_upgrade
     
-#        - name: Upgrade packages with yum
-#          when: ansible_pkg_mgr == 'yum'
-#          ansible.builtin.yum:
-#            name: '*'
-#            state: latest # noqa: package-latest
-#            exclude: kernel*
+        - name: send notification if upgrade failed
+          community.general.discord:
+              webhook_id: "{{ discord_id_ansible }}"
+              webhook_token: "{{ discord_token_ansible }}"
+              content: "<@&1294264865011273800>"
+              embeds:
+                - title: "Upgrade Failed"
+                  description: |
+                              Host : **`{{ inventory_hostname }}`**
+
+                              Recap : 
+                              `{{ result_upgrade }}`
+                              .
+                  footer:
+                    text: "Script : {{ playbook_name }}"
+            when: result_upgradee.failed == True
 
         # Check if reboot is required
         - name: check if system reboot is required
