@@ -47,10 +47,6 @@
           state: present
           update_cache: yes
         register: result
-
-      - name: test
-        debug:
-          msg: "{{ (( result | type_debug) == 'dict') | ternary('is a dictionary', 'is something else') }}"
       
       - name: send notification if failed
         community.general.discord:
