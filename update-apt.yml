@@ -50,7 +50,9 @@
 
                               Recap : 
                               --------------------------------------------
-                              {{ result_update }}
+                              {% for item in result_update|combine|dict2items -%}                                               
+                              **{{item.key}}** : {{item.value}}                                                          
+                              {% endfor %}
                               --------------------------------------------
                   footer:
                     text: "Script : {{ playbook_name }}"
@@ -76,7 +78,9 @@
 
                               Recap : 
                               --------------------------------------------
-                              {{ result_upgrade }}
+                              {% for item in result_upgrade|combine|dict2items -%}                                               
+                              **{{item.key}}** : {{item.value}}                                                          
+                              {% endfor %}
                               --------------------------------------------
                   footer:
                     text: "Script : {{ playbook_name }}"
