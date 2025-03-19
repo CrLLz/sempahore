@@ -43,10 +43,11 @@
             - cifs-utils
             - curl
             - traceroute
-            - dnsutils
+            - 1991dnsutils1991
           state: present
           update_cache: yes
         register: result
+      
       - name: send notification if failed
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
@@ -58,8 +59,11 @@
                           Host : **`{{ inventory_hostname }}`**
 
                           Recap : 
-                          `{{ result }}`
-                          .
+                          --------------------------------------------
+                          {% for item in result|combine|dict2items -%}                                               
+                          **{{item.key}}** : {{item.value}}                                                          
+                          {% endfor %}
+                          --------------------------------------------
               footer:
                 text: "Script : {{ playbook_name }}"
         when: result.failed == True
