@@ -47,6 +47,11 @@
           state: present
           update_cache: yes
         register: result
+
+      - name: test
+        debug:
+          msg: "{{ (( result | type_debug) == 'dict') | ternary('is a dictionary', 'is something else') }}"
+      
       - name: send notification if failed
         community.general.discord:
           webhook_id: "{{ discord_id_ansible }}"
@@ -60,7 +65,7 @@
                           Recap : 
                           --------------------------------------------
                           {% for item in result -%}                                               
-                          {{ item | dictsort | map('join',':') | join(' ') }}                                                          
+                          {{item.key}} : {{item.value}}                                                          
                           {% endfor %}
                           --------------------------------------------
               footer:
