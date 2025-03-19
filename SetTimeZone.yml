@@ -46,9 +46,13 @@
           - title: "Task Failed"
             description: |
                         Host : **`{{ inventory_hostname }}`**
-                        Recap : 
-                        `{{ result }}`
-                        .
+
+                          Recap : 
+                          --------------------------------------------
+                          {% for item in result|combine|dict2items -%}                                               
+                          **{{item.key}}** : {{item.value}}                                                          
+                          {% endfor %}
+                          --------------------------------------------
             footer:
               text: "Script : {{ playbook_name }}"
       when: result.failed == True
