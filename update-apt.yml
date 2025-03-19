@@ -56,8 +56,7 @@
                               --------------------------------------------
                   footer:
                     text: "Script : {{ playbook_name }}"
-          #when: result_update.failed == True
-          run_once: true
+          when: result_update.failed == True
     
         - name: Upgrade packages with apt
           ignore_errors: true
@@ -84,8 +83,7 @@
                               --------------------------------------------
                   footer:
                     text: "Script : {{ playbook_name }}"
-          #when: result_upgradee.failed == True
-          run_once: true
+          when: result_upgradee.failed == True
 
         - name: check if system reboot is required
           stat:
