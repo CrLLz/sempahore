@@ -48,9 +48,12 @@
                   description: |
                               Host : **`{{ inventory_hostname }}`**
 
-                              Recap : 
-                              `{{ result_update }}`
-                              .
+                          Recap : 
+                          --------------------------------------------
+                          {% for item in result_update|combine|dict2items -%}                                               
+                          **{{item.key}}** : {{item.value}}                                                          
+                          {% endfor %}
+                          --------------------------------------------
                   footer:
                     text: "Script : {{ playbook_name }}"
             when: result_update.failed == True
@@ -72,9 +75,12 @@
                   description: |
                               Host : **`{{ inventory_hostname }}`**
 
-                              Recap : 
-                              `{{ result_upgrade }}`
-                              .
+                          Recap : 
+                          --------------------------------------------
+                          {% for item in result_upgrade|combine|dict2items -%}                                               
+                          **{{item.key}}** : {{item.value}}                                                          
+                          {% endfor %}
+                          --------------------------------------------
                   footer:
                     text: "Script : {{ playbook_name }}"
             when: result_upgradee.failed == True
