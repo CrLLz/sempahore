@@ -65,7 +65,7 @@
                           Recap : 
                           --------------------------------------------
                           {% for item in result|combine|dict2items -%}                                               
-                          {{item.key}} : {{item.value}}                                                          
+                          **{{item.key}}** : {{item.value}}                                                          
                           {% endfor %}
                           --------------------------------------------
               footer:
