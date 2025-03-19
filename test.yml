@@ -60,7 +60,7 @@
                           Recap : 
                           --------------------------------------------
                           {% for item in result -%}                                               
-                          **{{ item | dictsort | map('join',':') | join(' ') }}**                                                          
+                          {{ item | dictsort | map('join',':') | join(' ') }}                                                          
                           {% endfor %}
                           --------------------------------------------
               footer:
