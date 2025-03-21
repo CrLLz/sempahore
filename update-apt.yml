@@ -90,7 +90,7 @@
             path: /var/run/reboot-required
           register: reboot_required
     
-        - name: Send a embedded message to the Discord channel
+        - name: send notification if reboot is required
           community.general.discord:
             # https://discord.com/api/webhooks/nnnnnnnnnn/xxxxxxxxxxxxxxxxxxxxxxxxxxx
             #                                  |        | |                         |
