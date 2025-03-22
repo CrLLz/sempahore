@@ -28,12 +28,12 @@
               text: "Script : {{ playbook_name }}"
       when: down
       run_once: true
+    - name: Get disk usage
+      shell: df -h / | awk 'NR==2 {print $5}'
+      register: disk_usage
     - name: Step by step
       throttle: 1
       block:
-        - name: Get disk usage
-          shell: df -h / | awk 'NR==2 {print $5}'
-          register: disk_usage
         - name: wait in serial
           command: sleep 5
         - name: Send a message to the Discord channel
