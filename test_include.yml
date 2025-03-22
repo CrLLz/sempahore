@@ -1,3 +1,4 @@
-tasks:
-  - debug:
-      msg: "{{ var1 }}"
+- hosts: localhost
+  tasks:
+    - debug:
+        msg: "{{ var1 }}"
