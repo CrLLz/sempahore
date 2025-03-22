@@ -17,7 +17,7 @@
         content: "<@&1294264865011273800>"
         embeds:
           - title: "Host Unreachable"
-             description: | 
+            description: | 
                         List : 
                         --------------------------------------------
                         {% for item in down -%}                                               
