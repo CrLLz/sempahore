@@ -10,4 +10,4 @@
 - name: Include a play after another play
   import_playbook: test_include.yml
   vars:
-    txt: "{{ playbook_name.stdout }}"
+    var1: "{{ playbook_name }}"
