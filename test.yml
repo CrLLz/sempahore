@@ -1,5 +1,9 @@
 - name: master
   hosts: localhost
+
+  vars:
+    playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
+  
   tasks:
   
     - debug:
@@ -9,3 +13,5 @@
     
 - name: Include a play after another play
   import_playbook: test_include.yaml
+  vars:
+    txt: "{{ playbook_name }}"
