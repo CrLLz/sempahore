@@ -1,4 +1,5 @@
 - name: slave
+  hosts: localhost
   tasks:
     - debug:
         msg: "{{ txt }}"
