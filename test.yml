@@ -7,7 +7,7 @@
         msg: msg master
     #- include_vars: properties/variables.yml
     - set_fact:
-      playname: "{{ playbook_name }}"
+        playname: "{{ playbook_name }}"
       
     
 - name: Include a play after another play
