@@ -32,7 +32,7 @@
     - name: Get disk usage
       shell: df -h / | awk 'NR==2 {print $5}'
       register: disk_usage
-    - name: wait  in serial
+    - name: wait by serial
       command: sleep 3
     - name: Send a message to the Discord channel
       community.general.discord:
