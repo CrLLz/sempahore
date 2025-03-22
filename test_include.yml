@@ -1,4 +1,5 @@
-- hosts: localhost
+- name: slave
+  hosts: localhost
   tasks:
     - debug:
         msg: "{{ var1 }}"
