@@ -29,9 +29,9 @@
       when: down
       run_once: true
     - block:
+      throttle: 1
       - name: wait in serial
         command: sleep 1
-        throttle: 1
       - name: Get disk usage
         shell: df -h / | awk 'NR==2 {print $5}'
         register: disk_usage
