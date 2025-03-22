@@ -1,4 +1,5 @@
-- hosts: localhost
+- name: master
+  hosts: localhost
   tasks:
     - debug:
         msg: play1
