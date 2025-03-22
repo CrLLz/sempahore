@@ -6,8 +6,11 @@
     - debug:
         msg: msg master
     #- include_vars: properties/variables.yml
+    - set_fact:
+      playname: "{{ playbook_name }}"
+      
     
 - name: Include a play after another play
   import_playbook: test_include.yml
   vars:
-    var1: "{{ playbook_name }}"
+    var1: "{{ playname }}"
