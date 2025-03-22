@@ -1,8 +1,11 @@
 - name: master
   hosts: localhost
   tasks:
+  
     - debug:
-        msg: play1
-
+        msg: msg master
+        
+    - include_vars: properties/variables.yml
+    
 - name: Include a play after another play
   import_playbook: test_include.yaml
