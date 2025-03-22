@@ -5,7 +5,7 @@
   tasks:
     - debug:
         msg: msg master
-    - include_vars: properties/variables.yml
+    #- include_vars: properties/variables.yml
     
 - name: Include a play after another play
   import_playbook: test_include.yml
