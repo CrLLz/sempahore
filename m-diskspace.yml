@@ -28,13 +28,12 @@
               text: "Script : {{ playbook_name }}"
       when: down
       run_once: true
+    - name: Get disk usage
+      shell: df -h / | awk 'NR==2 {print $5}'
+      register: disk_usage
     - block:
-      throttle: 1
       - name: wait in serial
         command: sleep 1
-      - name: Get disk usage
-        shell: df -h / | awk 'NR==2 {print $5}'
-        register: disk_usage
       - name: Send a message to the Discord channel
         community.general.discord:
         # https://discord.com/api/webhooks/nnnnnnnnnn/xxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -45,3 +44,4 @@
           webhook_id: "{{ discord_id_ansible }}"
           webhook_token: "{{ discord_token_ansible }}"
           content: "Current disk usage on ***{{ inventory_hostname }}***  :  {{ disk_usage.stdout[:-1]|int }}%"
+      when: disk_usage.stdout[:-1]|int > 1
