@@ -1,14 +1,10 @@
 - name: master
   hosts: localhost
-
   vars:
     playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
-  
   tasks:
-  
     - debug:
         msg: msg master
-        
     - include_vars: properties/variables.yml
     
 - name: Include a play after another play
