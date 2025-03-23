@@ -83,7 +83,7 @@
                               --------------------------------------------
                   footer:
                     text: "Script : {{ playbook_name }}"
-          when: result_upgradee.failed == True
+          when: result_upgrade.failed == True
 
         - name: check if system reboot is required
           stat:
