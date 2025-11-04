@@ -1,0 +1,24 @@
+---
+- name: Reboot VMs
+  hosts: all
+  gather_facts: true
+  become: true
+  
+  vars:
+    playbook_name: "{{ (lookup('file', '/proc/self/cmdline') | regex_replace('\u0000',' ')).split()|select('match','^[a-z-_/]*[.]y[a]*ml')|list|first|basename }}"
+  
+  tasks:
+  
+    - name: Reboot host
+      ansible.builtin.reboot:
+        reboot_timeout: 180  # Optional: Increase the reboot timeout
+        post_reboot_delay: 180 # Wait an additional 180 seconds (3 minutes) after the connection is back but before moving to the next task
+      async: 1
+      poll: 0
+
+    - name: Wait for the host to come back up
+      ansible.builtin.wait_for_connection:
+        connect_timeout: 20 # Time to wait before the first connection attempt
+        delay: 60           # Time to wait before the first connection attempt (can be changed)
+        sleep: 5            # Time to sleep between connection attempts
+        timeout: 300        # Total time to wait (in seconds) for the host to come back
